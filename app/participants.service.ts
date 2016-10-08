@@ -1,32 +1,37 @@
 import { Injectable } from '@angular/core';
 
 export class Participant {
-    name: string
+    id: number;
+    name: string;
+    relationshipIds: number[] = [];
 }
 
 @Injectable()
 export class ParticipantsService {
-    getParticipants(): Promise<string[]> {
-        return Promise.resolve(JSON.parse(localStorage.getItem('secret-santa.participants')) as string[]);
+    getParticipants(): Promise<Participant[]> {
+        return Promise.resolve(JSON.parse(localStorage.getItem('secret-santa.participants')) as Participant[] || []);
     }
 
-    addParticipant(participant: string): Promise<void> {
+    addParticipant(name: string): Promise<void> {
         return this.getParticipants()
-            .then((participants: string[]) => {
+            .then((participants: Participant[]) => {
+                let participant = new Participant();
+                participant.name = name;
+                participant.id = participants.length + 1;
                 participants.push(participant);
                 this.saveParticipants(participants);
             }) 
     }
 
-    removeParticipant(participant: string): Promise<void> {
+    removeParticipant(participant: Participant): Promise<void> {
         return this.getParticipants()
-            .then((participants: string[]) => {
-                participants = participants.filter(p => p !== participant);
+            .then((participants: Participant[]) => {
+                participants = participants.filter(p => p.id !== participant.id);
                 this.saveParticipants(participants);
             });
     }
 
-    private saveParticipants(participants: string[]): void {
+    private saveParticipants(participants: Participant[]): void {
         localStorage.setItem('secret-santa.participants', JSON.stringify(participants));
     }
 }

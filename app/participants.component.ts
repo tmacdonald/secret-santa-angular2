@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ParticipantsService } from './participants.service';
+import {ParticipantsService, Participant} from './participants.service';
 
 @Component({
     selector: 'participants',
@@ -8,20 +8,20 @@ import { ParticipantsService } from './participants.service';
         <h2>Participants</h2>
         <ul *ngIf="participants">
             <li *ngFor="let participant of participants">
-                {{participant}}
+                {{participant.name}}
                 <button (click)="remove(participant)">Remove</button>
             </li>
         </ul>
         <div>
             <label>Name:</label>
-            <input #name />
+            <input #name (keyup.enter)="add(name.value); name.value=''" />
             <button (click)="add(name.value); name.value=''">Add</button>
         </div>
     `,
     providers: [ ParticipantsService ]
 })
 export class ParticipantsComponent implements OnInit {
-    private participants: string[];
+    private participants: Participant[];
 
     constructor(private participantsService: ParticipantsService) {
     }
@@ -39,8 +39,8 @@ export class ParticipantsComponent implements OnInit {
             });
     }
 
-    remove(name: string): void {
-        this.participantsService.removeParticipant(name)
+    remove(participant: Participant): void {
+        this.participantsService.removeParticipant(participant)
             .then(() => {
                 this.participantsService.getParticipants()
                     .then(participants => this.participants = participants);
