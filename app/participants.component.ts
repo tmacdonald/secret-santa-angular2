@@ -11,6 +11,11 @@ import { ParticipantsService } from './participants.service';
                 {{participant}}
             </li>
         </ul>
+        <div>
+            <label>Name:</label>
+            <input #name />
+            <button (click)="add(name.value); name.value=''">Add</button>
+        </div>
     `,
     providers: [ ParticipantsService ]
 })
@@ -23,5 +28,13 @@ export class ParticipantsComponent implements OnInit {
     ngOnInit(): void {
         this.participantsService.getParticipants()
             .then(participants => this.participants = participants);
+    }
+
+    add(name: string): void {
+        this.participantsService.addParticipant(name)
+            .then(() => {
+                this.participantsService.getParticipants()
+                    .then(participants => this.participants = participants);
+            });
     }
 }
