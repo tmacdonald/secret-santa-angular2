@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { ParticipantsComponent } from './participants.component';
 import { RelationshipsComponent } from './relationships.component';
+import { ResultsComponent } from './results.component';
 
 @NgModule({
     imports: [ 
@@ -17,13 +18,18 @@ import { RelationshipsComponent } from './relationships.component';
             {
                 path: 'relationships',
                 component: RelationshipsComponent
+            },
+            {
+                path: 'results',
+                component: ResultsComponent
             }
         ])
     ],
     declarations: [ 
         AppComponent,
         ParticipantsComponent,
-        RelationshipsComponent
+        RelationshipsComponent,
+        ResultsComponent
     ],
     bootstrap: [ AppComponent ]
 })
