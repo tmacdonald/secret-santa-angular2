@@ -18,6 +18,14 @@ export class ParticipantsService {
             }) 
     }
 
+    removeParticipant(participant: string): Promise<void> {
+        return this.getParticipants()
+            .then((participants: string[]) => {
+                participants = participants.filter(p => p !== participant);
+                this.saveParticipants(participants);
+            });
+    }
+
     private saveParticipants(participants: string[]): void {
         localStorage.setItem('secret-santa.participants', JSON.stringify(participants));
     }

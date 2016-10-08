@@ -9,6 +9,7 @@ import { ParticipantsService } from './participants.service';
         <ul *ngIf="participants">
             <li *ngFor="let participant of participants">
                 {{participant}}
+                <button (click)="remove(participant)">Remove</button>
             </li>
         </ul>
         <div>
@@ -36,5 +37,13 @@ export class ParticipantsComponent implements OnInit {
                 this.participantsService.getParticipants()
                     .then(participants => this.participants = participants);
             });
+    }
+
+    remove(name: string): void {
+        this.participantsService.removeParticipant(name)
+            .then(() => {
+                this.participantsService.getParticipants()
+                    .then(participants => this.participants = participants);
+            })
     }
 }
