@@ -6,6 +6,9 @@ import { AppComponent } from './app.component';
 import { ParticipantsComponent } from './participants.component';
 import { RelationshipsComponent } from './relationships.component';
 import { ResultsComponent } from './results.component';
+import { PastResultsComponent } from "./past.results.component";
+import {ParticipantsService} from "./participants.service";
+import {ResultsService} from "./results.service";
 
 @NgModule({
     imports: [ 
@@ -20,6 +23,10 @@ import { ResultsComponent } from './results.component';
                 component: RelationshipsComponent
             },
             {
+                path: 'past-results',
+                component: PastResultsComponent
+            },
+            {
                 path: 'results',
                 component: ResultsComponent
             }
@@ -29,8 +36,10 @@ import { ResultsComponent } from './results.component';
         AppComponent,
         ParticipantsComponent,
         RelationshipsComponent,
+        PastResultsComponent,
         ResultsComponent
     ],
+    providers: [ ParticipantsService, ResultsService ],
     bootstrap: [ AppComponent ]
 })
 export class AppModule {}
