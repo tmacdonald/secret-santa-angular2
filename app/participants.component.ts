@@ -14,23 +14,14 @@ export class ParticipantsComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.participantsService.getParticipants()
-            .then(participants => this.participants = participants);
+        this.participants = this.participantsService.getParticipants();
     }
 
     add(name: string): void {
-        this.participantsService.addParticipant(name)
-            .then(() => {
-                this.participantsService.getParticipants()
-                    .then(participants => this.participants = participants);
-            });
+        this.participantsService.addParticipant(name);
     }
 
     remove(participant: Participant): void {
-        this.participantsService.removeParticipant(participant)
-            .then(() => {
-                this.participantsService.getParticipants()
-                    .then(participants => this.participants = participants);
-            })
+        this.participantsService.removeParticipant(participant);
     }
 }

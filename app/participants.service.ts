@@ -8,30 +8,36 @@ export class Participant {
 
 @Injectable()
 export class ParticipantsService {
-    getParticipants(): Promise<Participant[]> {
-        return Promise.resolve(JSON.parse(localStorage.getItem('secret-santa.participants')) as Participant[] || []);
+    private participants: Participant[];
+
+    constructor() {
+        this.participants = JSON.parse(localStorage.getItem('secret-santa.participants')) as Participant[] || [];
     }
 
-    addParticipant(name: string): Promise<void> {
-        return this.getParticipants()
-            .then((participants: Participant[]) => {
-                let participant = new Participant();
-                participant.name = name;
-                participant.id = participants.length + 1;
-                participants.push(participant);
-                this.saveParticipants(participants);
-            }) 
+    getParticipants(): Participant[] {
+        return this.participants;
     }
 
-    removeParticipant(participant: Participant): Promise<void> {
-        return this.getParticipants()
-            .then((participants: Participant[]) => {
-                participants = participants.filter(p => p.id !== participant.id);
-                this.saveParticipants(participants);
-            });
+    addParticipant(name: string): void {
+        let participant = new Participant();
+        participant.name = name;
+        participant.id = this.participants.length + 1;
+        this.participants.push(participant);
+
+        this.updateStore();
     }
 
-    private saveParticipants(participants: Participant[]): void {
-        localStorage.setItem('secret-santa.participants', JSON.stringify(participants));
+    updateParticipant(participant: Participant): void {
+        this.updateStore();
+    }
+
+    removeParticipant(participant: Participant): void {
+        this.participants = this.participants.filter(p => p.id !== participant.id);
+
+        this.updateStore();
+    }
+
+    private updateStore(): void {
+        localStorage.setItem('secret-santa.participants', JSON.stringify(this.participants));
     }
 }
